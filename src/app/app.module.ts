@@ -8,6 +8,11 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { TodoListFooterComponent } from './todo-list-footer/todo-list-footer.component';
 import { TodoDataService } from './todo-data.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from './api.service';
+import { FormsModule } from '@angular/forms';
+import { TodosComponent } from './todos/todos.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -15,13 +20,17 @@ import { TodoDataService } from './todo-data.service';
     TodoListHeaderComponent,
     TodoListComponent,
     TodoListItemComponent,
-    TodoListFooterComponent
+    TodoListFooterComponent,
+    TodosComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [TodoDataService],
+  providers: [TodoDataService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

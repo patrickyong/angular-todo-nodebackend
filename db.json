@@ -4,21 +4,6 @@
       "id": 1,
       "title": "Read SitePoint article",
       "complete": true
-    },
-    {
-      "title": "test",
-      "complete": false,
-      "id": 4
-    },
-    {
-      "title": "this is cool",
-      "complete": false,
-      "id": 5
-    },
-    {
-      "title": "test",
-      "complete": false,
-      "id": 6
     }
   ]
 }

@@ -4,23 +4,32 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Todo } from './todo';
 import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private session: SessionService) { }
 
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
 
   private API_URL = environment.apiUrl;
 
+
+  public signIn(username: string, password: string) {
+    return this.http
+      .post(this.API_URL + '/sign-in', {
+        username,
+        password
+      })
+      .pipe(
+        catchError(this.handleError('signIn')));
+  }
+
   public getAllTodos() {
+
     return this.http.get<Todo[]>(this.API_URL + '/todos')
       .pipe(
         catchError(this.handleError('getAllTodos', []))
@@ -29,7 +38,7 @@ export class ApiService {
   }
 
   public createTodo(todo: Todo) {
-    return this.http.post<Todo>(this.API_URL + '/todos/', todo, this.httpOptions).pipe(
+    return this.http.post<Todo>(this.API_URL + '/todos/', todo).pipe(
       tap((hero: Todo) => console.log(`added hero w/ id=${hero.id}`)),
       catchError(this.handleError<Todo>('createTodo'))
     );
@@ -45,7 +54,7 @@ export class ApiService {
 
   public updateTodo(todo: Todo) {
 
-    return this.http.put(this.API_URL + '/todos/' + todo.id, todo, this.httpOptions).pipe(
+    return this.http.put(this.API_URL + '/todos/' + todo.id, todo).pipe(
       tap(_ => console.log(`updated hero id=${todo.id}`)),
       catchError(this.handleError<any>('updateTodo'))
     );
@@ -54,7 +63,7 @@ export class ApiService {
   public deleteTodoById(id: number) {
     const url = `${this.API_URL}/todos/${id}`;
 
-    return this.http.delete<Todo>(url, this.httpOptions).pipe(
+    return this.http.delete<Todo>(url).pipe(
       tap(_ => console.log(`deleted hero id=${id}`)),
       catchError(this.handleError<Todo>('deleteTodoById'))
     );
